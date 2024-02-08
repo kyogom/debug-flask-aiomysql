@@ -1,0 +1,37 @@
+version: "2"
+services:
+  web:
+    build: .
+    ports:
+      - "5001:5001"
+    links:
+      - db
+    volumes:
+      - ./:/app
+    environment:
+      - PYTHONUNBUFFERED=1
+      - DB_HOST=db
+      - DB_USER=root
+      - DB_DATABASE=aiomysql
+      - DB_PASSWORD=uqbTUgBoPZIR
+      - DB_PORT=3306
+      - LC_ALL=C.UTF-8
+      - LANG=C.UTF-8
+      - FLASK_DEBUG=1
+      - FLASK_APP=src.app
+      - RACK_ENV=local
+  db:
+    platform: linux/x86_64
+    image: mysql:8.0
+    expose:
+      - "13307"
+    ports:
+      - "13307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: uqbTUgBoPZIR
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_DATABASE: aiomysql
+      MYSQL_ROOT_HOST: "%"
+    volumes:
+      - ./data:/var/lib/mysql:rw
+    user: mysql
